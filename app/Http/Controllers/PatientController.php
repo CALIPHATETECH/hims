@@ -63,6 +63,14 @@ class PatientController extends Controller
         return redirect()->route('dashboard');
     }
 
+    public function sendInvestigation (Request $request, $patientId)
+    {
+        $request->validate(['test'=>'required']);
+        $patient = Patient::find($patientId);
+        $patient->investigations()->create(['test_id'=>$request->test]);
+        return redirect()->route('dashboard');
+    }
+
     public function addService(Request $request,$patientId)
     {
         foreach($request->all() as $key => $value){

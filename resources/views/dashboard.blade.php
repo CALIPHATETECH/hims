@@ -26,7 +26,8 @@
                 <th>GENDER</th>
                 <th>ADDRESS</th>
                 <th>CONTACT</th>
-                <th>SERVICE</th>
+                <th>SERVICE APPLIED FOR</th>
+                <th>TESTS</th>
                 <th></th>
             </tr>
             @include('patient.create')
@@ -43,9 +44,13 @@
                         <td>{{$consultancy->patient->contact}}</td>
                         <td>{{$consultancy->service->name}}</td>
                         <td>
-                            <button class="btn btn-warning">Send Invesgation</button>
-                            <button class="btn btn-success">Prescribe the Patient</button>
-                            <button class="btn btn-primary">Mark as Recovered</button>
+                        @foreach($consultancy->patient->investigations as $investigation)
+                            <a href="#">{{$investigation->test->name}} Investigation {{$investigation->result_id == null ? 'Awaiting' : 'Conducted'}}</a>
+                        @endforeach
+                        </td>
+                        <td>
+                            <button class="btn btn-warning" data-toggle="modal" data-target="#send_{{$consultancy->patient->id}}">Send Invesgation</button>
+                            @include('patient.investigation')
                         </td>
                     </tr>
                 @endforeach

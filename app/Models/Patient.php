@@ -11,4 +11,9 @@ class Patient extends BaseModel
     {
         return $this->hasMany(COnsultancy::class);
     }
+
+    public function investigations()
+    {
+        return $this->hasMany(Investigation::class);
+    }
 }

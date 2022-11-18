@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Patient;
 use App\Models\Service;
+use App\Models\Investigation;
+use App\Models\Result;
 
 use Illuminate\Http\Request;
 
@@ -68,6 +70,13 @@ class PatientController extends Controller
         $request->validate(['test'=>'required']);
         $patient = Patient::find($patientId);
         $patient->investigations()->create(['test_id'=>$request->test]);
+        return redirect()->route('dashboard');
+    }
+    public function sendResult (Request $request, $patientId, $investiogationId)
+    {
+        $request->validate(['content'=>'required']);
+        $investigation = Investigation::find($patientId);
+        $investigation->update(['result_id'=>Result::firstOrCreate(['content'=>$request->content])->id]);
         return redirect()->route('dashboard');
     }
 

@@ -47,6 +47,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function (){
         Route::post('/{patientId}/update', 'PatientController@update')->name('update');
         Route::post('/{patientId}/add-service', 'PatientController@addService')->name('addservice');
         Route::post('/{patientId}/send-investigation', 'PatientController@sendInvestigation')->name('send.investigation');
+        Route::post('/{patientId}/investigation/{investigationId}/send-result', 'PatientController@sendResult')->name('investigation.send.result');
         Route::post('/verify', 'PatientController@verify')->name('verify');
         Route::get('/{patientId}/delete', 'PatientController@delete')->name('delete');
         Route::get('/{patientId}/service', 'PatientController@service')->name('service');

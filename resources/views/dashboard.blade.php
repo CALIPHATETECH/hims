@@ -29,8 +29,9 @@
                 <th>SERVICE APPLIED FOR</th>
                 <th>TESTS</th>
                 <th></th>
+                <th></th>
             </tr>
-            @include('patient.create')
+            
         </thead>
         <tbody>
             @foreach(Auth::user()->staff->staffServices as $staffService)
@@ -45,17 +46,67 @@
                         <td>{{$consultancy->service->name}}</td>
                         <td>
                         @foreach($consultancy->patient->investigations as $investigation)
-                            <a href="#">{{$investigation->test->name}} Investigation {{$investigation->result_id == null ? 'Awaiting' : 'Conducted'}}</a>
+                            @if($investigation->result_id == null)
+                                {{$investigation->test->name}} Investigation Awaiting
+                            @else
+                                <b>Result</b><br>{{$investigation->result->content}}
+                            @endif
+                            
                         @endforeach
                         </td>
                         <td>
                             <button class="btn btn-warning" data-toggle="modal" data-target="#send_{{$consultancy->patient->id}}">Send Invesgation</button>
                             @include('patient.investigation')
                         </td>
+                        <td>
+                            <button class ="btn btn-info">View Medical Hostory</button>
+                        </td>
                     </tr>
                 @endforeach
             @endforeach
         </tbody>
     </table>
+    @elseif(Auth::user()->role == 'lab')
+    <table class="table" style="color: black;">
+        <thead>
+            <tr>
+                <th>S/N</th>
+                <td>TEST</td>
+                <th>NAME</th>
+                <th>HOSPITAL NO</th>
+                <th>GENDER</th>
+                <th>ADDRESS</th>
+                <th>CONTACT</th>
+                <th></th>
+                <th></th>
+            </tr>
+            
+        </thead>
+        <tbody>
+            @foreach(App\Models\Investigation::all() as $investigation)
+               
+                <tr>
+                    <td>{{$loop->iteration}}</td>
+                    <td>{{$investigation->test->name}}</td>
+                    <td>{{$investigation->patient->name}}</td>
+                    <td>{{$investigation->patient->hospital_no}}</a></td>
+                    <td>{{$investigation->patient->gender}}</td>
+                    <td>{{$investigation->patient->address}}</td>
+                    <td>{{$investigation->patient->contact}}</td>
+                    <td>
+                    @if($investigation->result)
+                        Conducted
+                    @else
+                        <button class="btn btn-warning" data-toggle="modal" data-target="#result_{{$investigation->id}}">Send Result</button>
+                        @include('patient.result')
+                    @endif
+                    </td>
+                    
+                </tr>
+               
+            @endforeach
+        </tbody>
+    </table>
+
     @endif
     @endsection

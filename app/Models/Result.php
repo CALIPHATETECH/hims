@@ -5,7 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Result extends Model
+class Result extends BaseModel
 {
-    use HasFactory;
+    public function investigation()
+    {
+        return $this->hasMany(Investigation::class);
+    }
 }

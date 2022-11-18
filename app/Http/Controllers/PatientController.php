@@ -79,10 +79,11 @@ class PatientController extends Controller
         return redirect()->route('dashboard');
     }
     public function sendResult (Request $request, $patientId, $investiogationId)
-    {
+    { 
         $request->validate(['content'=>'required']);
-        $investigation = Investigation::find($patientId);
-        $investigation->update(['result_id'=>Result::firstOrCreate(['content'=>$request->content])->id]);
+        $investigation = Investigation::find($investiogationId);
+        $result = Result::create(['content'=>$request->content]);
+        $investigation->update(['result_id'=>$result->id]);
         return redirect()->route('dashboard');
     }
 
